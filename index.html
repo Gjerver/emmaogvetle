@@ -3,166 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emma & Vetles Bryllup | Sommeren 2026</title>
+    <title>Emma & Vetle | Bryllup Sommeren 2026</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* Generell stil for hele siden */
+        /* Fargepalett og grunninnstillinger */
+        :root {
+            --text-main: #2C363F;      /* Mørk, dempet grå for utmerket lesbarhet */
+            --accent-color: #8A6B4E;   /* En dyp, elegant bronse/gull */
+            --bg-color: #FAFAFA;       /* Veldig lys, ren off-white */
+            --card-bg: #FFFFFF;        /* Helt hvit for kontrast-bokser */
+        }
+
         body {
-            font-family: 'Playfair Display', serif; /* Elegant font for brødtekst */
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
-            background-color: #fdfaf7; /* Lys, varm off-white bakgrunn */
-            color: #4a4a4a; /* Myk grå for tekst */
             line-height: 1.8;
-            text-align: center;
+            font-weight: 300;
         }
 
-        /* Container for innholdet for å holde det luftig */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 20px;
+        /* Typografi */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
         }
 
-        /* Stil for overskrifter */
         h1 {
-            font-family: 'Great Vibes', cursive; /* Romantisk skrift for hovedtittel */
-            font-size: 5rem;
-            color: #d4a373; /* En myk gull/kobberfarge */
-            margin-bottom: 20px;
+            font-size: 4rem;
+            margin-top: 0;
+            letter-spacing: 2px;
         }
 
         h2 {
-            font-size: 2.2rem;
-            color: #d4a373;
-            margin-top: 50px;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #e0d0c0; /* En tynn delelinje under */
-            display: inline-block;
-            padding-bottom: 10px;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        /* En liten dekorativ linje under overskrifter (H2) */
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background-color: var(--accent-color);
+            margin: 15px auto 0 auto;
         }
 
         p {
             font-size: 1.1rem;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 700px;
+            margin: 0 auto 1.5rem auto;
+            text-align: center;
         }
 
-        /* Seksjonene */
+        /* Seksjoner og Layout */
         section {
-            padding: 40px 0;
+            padding: 6rem 20px;
         }
 
-        /* Bildegalleri-seksjonen */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Hovedbildet øverst (Hero) */
+        .hero {
+            text-align: center;
+            padding: 4rem 20px 2rem 20px;
+        }
+
+        .hero-image-container {
+            width: 100%;
+            max-width: 800px;
+            height: 60vh; /* Tar opp 60% av skjermhøyden */
+            min-height: 400px;
+            margin: 2rem auto;
+            background-color: #EBEBEB; /* Vises hvis bildet mangler */
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Sørger for at bildet fyller boksen uten å strekkes */
+        }
+
+        .date-badge {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Bildegalleri */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
         .gallery-item {
-            position: relative;
+            background-color: #EBEBEB; /* Vises hvis bildet mangler */
+            aspect-ratio: 3 / 4; /* Setter en fast, pen portrett-proporsjon */
+            border-radius: 4px;
             overflow: hidden;
-            border-radius: 8px; /* Myke kanter */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Litt dybde */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
 
         .gallery-item img {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 100%;
             object-fit: cover;
-            aspect-ratio: 4 / 5; /* Alle bildene får samme proporsjoner */
+            transition: transform 0.5s ease;
         }
 
-        /* RSVP-knappen */
-        .rsvp-button {
+        .gallery-item:hover img {
+            transform: scale(1.03); /* Liten zoom-effekt når man holder over */
+        }
+
+        /* Informasjonsboks (Detaljer) */
+        .info-box {
+            background-color: var(--card-bg);
+            padding: 4rem 2rem;
+            border-radius: 4px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .info-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item strong {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.2rem;
+        }
+
+        /* RSVP-knapp */
+        .btn {
             display: inline-block;
-            padding: 15px 35px;
-            background-color: #d4a373;
-            color: white;
+            background-color: var(--accent-color);
+            color: #FFFFFF;
+            padding: 15px 40px;
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
+            font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            transition: background-color 0.3s ease; /* Jevn hover-effekt */
-            margin-top: 30px;
+            border-radius: 2px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
         }
 
-        .rsvp-button:hover {
-            background-color: #bc8a5f; /* LITT mørkere ved hover */
+        .btn:hover {
+            background-color: #6B523A;
         }
 
         /* Footer */
         footer {
-            padding: 40px 0;
-            background-color: #f7f1eb; /* Litt mørkere enn bakgrunnen */
-            color: #7a7a7a;
+            text-align: center;
+            padding: 3rem 20px;
+            background-color: #EFEBE7;
             font-size: 0.9rem;
-            margin-top: 60px;
+            color: #777;
         }
 
+        /* Responsivitet for mobil */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2rem; }
+            section { padding: 4rem 15px; }
+            .hero-image-container { height: 50vh; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <header class="hero">
+        <span class="date-badge">Sommeren 2026</span>
+        <h1>Emma & Vetle</h1>
         
-        <header>
-            <h1>Emma & Vetle</h1>
-            <p>Ber til bryllup Sommeren 2026</p>
-        </header>
+        <div class="hero-image-container">
+            <img src="paret_hoved.jpg" alt="Emma og Vetle">
+        </div>
+        
+        <p>Vi gleder oss til å feire kjærligheten med våre nærmeste venner og familie.</p>
+    </header>
+
+    <div class="container">
 
         <section>
-            <div class="gallery-item">
-                <img src="paret_hoved.jpg" alt="Emma og Vetle sammen">
-            </div>
+            <h2>Velkommen</h2>
+            <p>Vi møttes [fyll inn en kort, hyggelig setning om hvordan dere møttes, eller bare ønsk velkommen til dagen]. Nå, flere år senere, er vi klare for vårt største eventyr sammen.</p>
+            <p>Vi håper dere vil dele denne fantastiske dagen med oss!</p>
         </section>
 
         <section>
-            <h2>Vår Historie</h2>
-            <p>Vi møttes en solskinnsdag... (Her kan dere skrive en kort og koselig tekst om hvordan dere møttes, eller en generell velkomst til gjestene!)</p>
-            <p>...og nå gleder vi oss utrolig mye til å feire kjærligheten sammen med familie og venner.</p>
-        </section>
-
-        <section>
-            <h2>Bryllupsdetaljer</h2>
-            <div style="text-align: left; max-width: 400px; margin: 0 auto;">
-                <p><strong>Dato:</strong> Lørdag 1. august 2026</p>
-                <p><strong>Tid:</strong> Kl. 14:00</p>
-                <p><strong>Sted:</strong> [Navn på kirke/lokale]</p>
-                <p><strong>Adresse:</strong> [Adresse til lokalet]</p>
-                <p><strong>Festen:</strong> Etter seremonien samles vi for mat, drikke og dans i [Navn på festlokale].</p>
-            </div>
-        </section>
-
-        <section>
-            <h2>Svar utbedes</h2>
-            <p>Vi håper du kan dele dagen med oss! Svar gjerne så snart som mulig, og senest innen 1. april 2026.</p>
-            <a href="mailto:bryllup@emmaogvetle.no?subject=RSVP - Emma og Vetle" class="rsvp-button">Meld deg på</a>
-        </section>
-
-        <section>
-            <h2>Gaveønsker</h2>
-            <p>Den største gaven er deres nærvær. Skulle dere likevel ønske å gi en gave, setter vi stor pris på bidrag til bryllupsreisen vår eller noe fra ønskelisten vår.</p>
-            <p>[Lenke til en ekstern ønskeliste her, eller bankkontonummer]</p>
-        </section>
-
-        <section>
-            <h2>Våre Minnesmerker</h2>
+            <h2>Et lite tilbakeblikk</h2>
             <div class="gallery">
                 <div class="gallery-item">
                     <img src="emma.jpg" alt="Emma">
                 </div>
                 <div class="gallery-item">
-                    <img src="paret.jpg" alt="Emma og Vetle romantisk">
+                    <img src="paret.jpg" alt="Emma og Vetle">
                 </div>
                 <div class="gallery-item">
                     <img src="vetle.jpg" alt="Vetle">
@@ -170,10 +232,44 @@
             </div>
         </section>
 
+        <section>
+            <div class="info-box">
+                <h2>Program & Detaljer</h2>
+                
+                <div class="info-item">
+                    <strong>Dato</strong>
+                    Lørdag 1. august 2026
+                </div>
+                
+                <div class="info-item">
+                    <strong>Vielse</strong>
+                    Kl. 14:00 i [Navn på kirke/sted]<br>
+                    [Adresse til vielsen]
+                </div>
+                
+                <div class="info-item">
+                    <strong>Middag & Fest</strong>
+                    Kl. 17:00 på [Navn på selskapslokale]<br>
+                    [Adresse til lokalet]
+                </div>
+                
+                <div class="info-item">
+                    <strong>Toastmaster</strong>
+                    [Navn på toastmaster] kan kontaktes på [Telefonnummer] for taler eller innslag.
+                </div>
+            </div>
+        </section>
+
+        <section style="text-align: center;">
+            <h2>Svar utbedes</h2>
+            <p>For at vi skal kunne planlegge dagen best mulig, ber vi om svar innen <strong>1. april 2026</strong>. Vennligst gi også beskjed om eventuelle allergier.</p>
+            <a href="mailto:bryllup@emmaogvetle.no?subject=Svar på bryllupsinvitasjon" class="btn">Meld ifra her</a>
+        </section>
+
     </div>
 
     <footer>
-        <p>&copy; 2023 Emma & Vetle | Designet med kjærlighet</p>
+        <p>Gjort med kjærlighet for Emma & Vetle &copy; 2026</p>
     </footer>
 
 </body>
