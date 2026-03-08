@@ -263,37 +263,42 @@
         <p>Gjort med kjærlighet for Emma & Vetle &copy; 2026</p>
     </footer>
 
-    <script>
+<script>
         // Innstillinger
         const totalImages = 77; // Totalt antall bilder
-        const intervalTime = 3000; // 3000 millisekunder = 3 sekunder
+        const intervalTime = 3000; // 3 sekunder
         
         let currentIndex = 1;
-        let activeSlide = 1; // Holder styr på hvilken img-tag som vises (1 eller 2)
+        let activeSlide = 1; 
         
         const img1 = document.getElementById('slide1');
         const img2 = document.getElementById('slide2');
 
         // Bytter bilde hvert 3. sekund
         setInterval(() => {
-            // Gå til neste bilde, eller start på 1 igjen hvis vi har nådd 77
             currentIndex++;
             if (currentIndex > totalImages) {
                 currentIndex = 1;
             }
 
-            // Sjekk hvem som er aktiv, og bytt innhold på den som IKKE er aktiv
-            if (activeSlide === 1) {
-                img2.src = currentIndex + '.jpg'; // Gjør klart bilde 2 i bakgrunnen
-                img2.classList.add('active');     // Fad inn bilde 2
-                img1.classList.remove('active');  // Fad ut bilde 1
-                activeSlide = 2;
-            } else {
-                img1.src = currentIndex + '.jpg'; // Gjør klart bilde 1 i bakgrunnen
-                img1.classList.add('active');     // Fad inn bilde 1
-                img2.classList.remove('active');  // Fad ut bilde 2
-                activeSlide = 1;
-            }
+            // 1. Vi lager en "usynlig" bilde-laster i bakgrunnen
+            const preloader = new Image();
+            preloader.src = currentIndex + '.jpg';
+
+            // 2. Først når bildet er ferdig lastet ned over nettet, gjør vi det synlig
+            preloader.onload = () => {
+                if (activeSlide === 1) {
+                    img2.src = preloader.src; 
+                    img2.classList.add('active');     
+                    img1.classList.remove('active');  
+                    activeSlide = 2;
+                } else {
+                    img1.src = preloader.src; 
+                    img1.classList.add('active');     
+                    img2.classList.remove('active');  
+                    activeSlide = 1;
+                }
+            };
         }, intervalTime);
     </script>
 
