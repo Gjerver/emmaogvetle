@@ -12,10 +12,10 @@
     <style>
         /* Fargepalett og grunninnstillinger */
         :root {
-            --text-main: #2C363F;      /* Mørk, dempet grå for utmerket lesbarhet */
-            --accent-color: #8A6B4E;   /* En dyp, elegant bronse/gull */
-            --bg-color: #FAFAFA;       /* Veldig lys, ren off-white */
-            --card-bg: #FFFFFF;        /* Helt hvit for kontrast-bokser */
+            --text-main: #2C363F;      
+            --accent-color: #8A6B4E;   
+            --bg-color: #FAFAFA;       
+            --card-bg: #FFFFFF;        
         }
 
         body {
@@ -49,7 +49,6 @@
             position: relative;
         }
 
-        /* En liten dekorativ linje under overskrifter (H2) */
         h2::after {
             content: '';
             display: block;
@@ -85,10 +84,10 @@
         .hero-image-container {
             width: 100%;
             max-width: 800px;
-            height: 60vh; /* Tar opp 60% av skjermhøyden */
+            height: 60vh;
             min-height: 400px;
             margin: 2rem auto;
-            background-color: #EBEBEB; /* Vises hvis bildet mangler */
+            background-color: #EBEBEB;
             border-radius: 4px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
@@ -97,7 +96,7 @@
         .hero-image-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Sørger for at bildet fyller boksen uten å strekkes */
+            object-fit: cover;
         }
 
         .date-badge {
@@ -109,31 +108,34 @@
             display: block;
         }
 
-        /* Bildegalleri */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .gallery-item {
-            background-color: #EBEBEB; /* Vises hvis bildet mangler */
-            aspect-ratio: 3 / 4; /* Setter en fast, pen portrett-proporsjon */
+        /* Slideshow / Bildekarusell */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 600px; /* Juster denne hvis du vil ha slideshowet høyere/lavere */
+            margin: 0 auto;
+            background-color: #EBEBEB;
             border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        .gallery-item img {
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            opacity: 0;
+            transition: opacity 1s ease-in-out; /* Dette gir den "smoothe" overgangen på 1 sekund */
+            z-index: 1;
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.03); /* Liten zoom-effekt når man holder over */
+        .slide.active {
+            opacity: 1;
+            z-index: 2;
         }
 
         /* Informasjonsboks (Detaljer) */
@@ -193,6 +195,7 @@
             h2 { font-size: 2rem; }
             section { padding: 4rem 15px; }
             .hero-image-container { height: 50vh; }
+            .slideshow-container { height: 400px; } /* Slideshowet blir litt lavere på mobil */
         }
     </style>
 </head>
@@ -213,22 +216,15 @@
 
         <section>
             <h2>Velkommen</h2>
-            <p>Vi møttes [fyll inn en kort, hyggelig setning om hvordan dere møttes, eller bare ønsk velkommen til dagen]. Nå, flere år senere, er vi klare for vårt største eventyr sammen.</p>
+            <p>Vi møttes [fyll inn en kort, hyggelig setning om hvordan dere møttes]. Nå, flere år senere, er vi klare for vårt største eventyr sammen.</p>
             <p>Vi håper dere vil dele denne fantastiske dagen med oss!</p>
         </section>
 
         <section>
             <h2>Et lite tilbakeblikk</h2>
-            <div class="gallery">
-                <div class="gallery-item">
-                    <img src="emma.jpg" alt="Emma">
-                </div>
-                <div class="gallery-item">
-                    <img src="paret.jpg" alt="Emma og Vetle">
-                </div>
-                <div class="gallery-item">
-                    <img src="vetle.jpg" alt="Vetle">
-                </div>
+            <div class="slideshow-container">
+                <img id="slide1" class="slide active" src="1.jpg" alt="Minne 1">
+                <img id="slide2" class="slide" src="2.jpg" alt="Minne 2">
             </div>
         </section>
 
@@ -252,11 +248,6 @@
                     Kl. 17:00 på [Navn på selskapslokale]<br>
                     [Adresse til lokalet]
                 </div>
-                
-                <div class="info-item">
-                    <strong>Toastmaster</strong>
-                    [Navn på toastmaster] kan kontaktes på [Telefonnummer] for taler eller innslag.
-                </div>
             </div>
         </section>
 
@@ -271,6 +262,40 @@
     <footer>
         <p>Gjort med kjærlighet for Emma & Vetle &copy; 2026</p>
     </footer>
+
+    <script>
+        // Innstillinger
+        const totalImages = 77; // Totalt antall bilder
+        const intervalTime = 3000; // 3000 millisekunder = 3 sekunder
+        
+        let currentIndex = 1;
+        let activeSlide = 1; // Holder styr på hvilken img-tag som vises (1 eller 2)
+        
+        const img1 = document.getElementById('slide1');
+        const img2 = document.getElementById('slide2');
+
+        // Bytter bilde hvert 3. sekund
+        setInterval(() => {
+            // Gå til neste bilde, eller start på 1 igjen hvis vi har nådd 77
+            currentIndex++;
+            if (currentIndex > totalImages) {
+                currentIndex = 1;
+            }
+
+            // Sjekk hvem som er aktiv, og bytt innhold på den som IKKE er aktiv
+            if (activeSlide === 1) {
+                img2.src = currentIndex + '.jpg'; // Gjør klart bilde 2 i bakgrunnen
+                img2.classList.add('active');     // Fad inn bilde 2
+                img1.classList.remove('active');  // Fad ut bilde 1
+                activeSlide = 2;
+            } else {
+                img1.src = currentIndex + '.jpg'; // Gjør klart bilde 1 i bakgrunnen
+                img1.classList.add('active');     // Fad inn bilde 1
+                img2.classList.remove('active');  // Fad ut bilde 2
+                activeSlide = 1;
+            }
+        }, intervalTime);
+    </script>
 
 </body>
 </html>
